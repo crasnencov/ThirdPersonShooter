@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour
 
     private InputAction moveAction, jumpAction;
 
+    private Transform cameraTransform;
+
     private void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -22,6 +24,9 @@ public class PlayerController : MonoBehaviour
 
         moveAction = playerInput.actions["Move"];
         jumpAction = playerInput.actions["Jump"];
+
+        cameraTransform = Camera.main.transform;
+        Debug.Log("Camera = " + cameraTransform.name);
     }
 
     void Update()
@@ -33,10 +38,11 @@ public class PlayerController : MonoBehaviour
         }
 
         Vector2 input = moveAction.ReadValue<Vector2>();
-        Vector3 move = new Vector3(input.x, 0,input.y);
+        Vector3 move = new Vector3(input.x, 0, input.y);
+        move = move.x * cameraTransform.right.normalized + move.z * cameraTransform.forward.normalized;
+        move.y = 0f;
         controller.Move(move * Time.deltaTime * playerSpeed);
 
-      
 
         // Changes the height position of the player..
         if (jumpAction.triggered && groundedPlayer)
