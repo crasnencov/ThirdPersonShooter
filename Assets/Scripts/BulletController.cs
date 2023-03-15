@@ -33,8 +33,6 @@ public class BulletController : MonoBehaviour
         //instantiate decal in hit point and rotate towards arrival point
         GameObject.Instantiate(bulletDecal, contact.point + contact.normal * 0.0001f,
             Quaternion.LookRotation(contact.normal));
-        Debug.Log("contact point = " + contact.point);
-        Debug.Log("contact normal = " + contact.normal);
         Destroy(gameObject);
     }
 }
