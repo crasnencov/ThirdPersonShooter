@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform barrelTransform;
     [SerializeField] private Transform bulletParent;
     [SerializeField] private float bulletHitMissDistance = 25f;
+    [SerializeField] private float animationSmoothTime = 0.1f;
 
     private CharacterController controller;
     private PlayerInput playerInput;
@@ -22,6 +23,11 @@ public class PlayerController : MonoBehaviour
     private InputAction moveAction, jumpAction, shootAction;
 
     private Transform cameraTransform;
+
+    private Animator animator;
+    private int moveXAnimationParameterId, moveZAnimationParameterId;
+    private Vector2 currentAnimationBlendVector;
+    private Vector2 animationVelocity; 
 
     private void Awake()
     {
@@ -34,6 +40,11 @@ public class PlayerController : MonoBehaviour
 
         cameraTransform = Camera.main.transform;
         Cursor.lockState = CursorLockMode.Locked;
+        
+        //Animations
+        animator = GetComponent<Animator>();
+        moveXAnimationParameterId = Animator.StringToHash("MoveX");
+        moveZAnimationParameterId = Animator.StringToHash("MoveZ");
     }
 
     private void OnEnable()
@@ -55,7 +66,9 @@ public class PlayerController : MonoBehaviour
         }
 
         Vector2 input = moveAction.ReadValue<Vector2>();
-        Vector3 move = new Vector3(input.x, 0, input.y);
+        currentAnimationBlendVector = Vector2.SmoothDamp(currentAnimationBlendVector, input, ref animationVelocity,
+            animationSmoothTime);
+        Vector3 move = new Vector3(currentAnimationBlendVector.x, 0, currentAnimationBlendVector.y);
         move = move.x * cameraTransform.right.normalized + move.z * cameraTransform.forward.normalized;
         move.y = 0f;
         controller.Move(move * Time.deltaTime * playerSpeed);
@@ -74,6 +87,9 @@ public class PlayerController : MonoBehaviour
         float targetAngle = cameraTransform.eulerAngles.y;
         Quaternion targetRotation = Quaternion.Euler(0, targetAngle, 0);
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        
+        animator.SetFloat(moveXAnimationParameterId, currentAnimationBlendVector.x);
+        animator.SetFloat(moveZAnimationParameterId, currentAnimationBlendVector.y);
     }
 
     private void ShootGun()
