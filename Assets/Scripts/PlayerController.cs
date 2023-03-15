@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform bulletParent;
     [SerializeField] private float bulletHitMissDistance = 25f;
     [SerializeField] private float animationSmoothTime = 0.1f;
+    [SerializeField] private float animationPlayTransition = 0.15f;
 
     private CharacterController controller;
     private PlayerInput playerInput;
@@ -27,7 +28,8 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
     private int moveXAnimationParameterId, moveZAnimationParameterId;
     private Vector2 currentAnimationBlendVector;
-    private Vector2 animationVelocity; 
+    private Vector2 animationVelocity;
+    private int jumpAnimation;
 
     private void Awake()
     {
@@ -45,6 +47,7 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         moveXAnimationParameterId = Animator.StringToHash("MoveX");
         moveZAnimationParameterId = Animator.StringToHash("MoveZ");
+        jumpAnimation = Animator.StringToHash("Pistol Jump");
     }
 
     private void OnEnable()
@@ -78,6 +81,7 @@ public class PlayerController : MonoBehaviour
         if (jumpAction.triggered && groundedPlayer)
         {
             playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
+            animator.CrossFade(jumpAnimation, animationPlayTransition);
         }
 
         playerVelocity.y += gravityValue * Time.deltaTime;
