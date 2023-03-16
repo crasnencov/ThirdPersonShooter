@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 currentAnimationBlendVector;
     private Vector2 animationVelocity;
     private int jumpAnimation;
+    private int recoilAnimation;
 
     private void Awake()
     {
@@ -50,6 +51,7 @@ public class PlayerController : MonoBehaviour
         moveXAnimationParameterId = Animator.StringToHash("MoveX");
         moveZAnimationParameterId = Animator.StringToHash("MoveZ");
         jumpAnimation = Animator.StringToHash("Pistol Jump");
+        recoilAnimation = Animator.StringToHash("Pistol Shoot Recoil");
     }
 
     private void OnEnable()
@@ -116,5 +118,6 @@ public class PlayerController : MonoBehaviour
             bulletController.Target = cameraTransform.position + cameraTransform.forward * bulletHitMissDistance;
             bulletController.Hit = false;
         }
+        animator.CrossFade(recoilAnimation, animationPlayTransition);
     }
 }
