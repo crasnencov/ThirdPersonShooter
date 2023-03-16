@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float bulletHitMissDistance = 25f;
     [SerializeField] private float animationSmoothTime = 0.1f;
     [SerializeField] private float animationPlayTransition = 0.15f;
+    [SerializeField] private Transform aimTarget;
+    [SerializeField] private float aimDistance = 10f;
 
     private CharacterController controller;
     private PlayerInput playerInput;
@@ -94,6 +96,8 @@ public class PlayerController : MonoBehaviour
         
         animator.SetFloat(moveXAnimationParameterId, currentAnimationBlendVector.x);
         animator.SetFloat(moveZAnimationParameterId, currentAnimationBlendVector.y);
+
+        aimTarget.position = cameraTransform.position + cameraTransform.forward * aimDistance;
     }
 
     private void ShootGun()
