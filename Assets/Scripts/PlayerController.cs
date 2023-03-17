@@ -5,7 +5,9 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(CharacterController), typeof(PlayerInput))]
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private float playerSpeed = 2.0f;
+    public float targetSpeed;
+    [SerializeField] private float moveSpeed = 2.0f;
+    [SerializeField] private float runSpeed = 5.0f;
     [SerializeField] private float jumpHeight = 1.0f;
     [SerializeField] private float gravityValue = -9.81f;
     [SerializeField] private float rotationSpeed = 5f;
@@ -23,7 +25,9 @@ public class PlayerController : MonoBehaviour
     private Vector3 playerVelocity;
     private bool groundedPlayer;
 
-    private InputAction moveAction, jumpAction, shootAction;
+    private InputAction moveAction, jumpAction, shootAction, runAction;
+    
+    [SerializeField] private InputActionReference actionReference;
 
     private Transform cameraTransform;
 
@@ -31,8 +35,8 @@ public class PlayerController : MonoBehaviour
     private int moveXAnimationParameterId, moveZAnimationParameterId;
     private Vector2 currentAnimationBlendVector;
     private Vector2 animationVelocity;
-    private int jumpAnimation;
-    private int recoilAnimation;
+    private int jumpAnimation, recoilAnimation, runAnimation, walkAnimation;
+    
 
     private void Awake()
     {
@@ -42,6 +46,7 @@ public class PlayerController : MonoBehaviour
         moveAction = playerInput.actions["Move"];
         jumpAction = playerInput.actions["Jump"];
         shootAction = playerInput.actions["Shoot"];
+        runAction = playerInput.actions["Run"];
 
         cameraTransform = Camera.main.transform;
         Cursor.lockState = CursorLockMode.Locked;
@@ -52,17 +57,38 @@ public class PlayerController : MonoBehaviour
         moveZAnimationParameterId = Animator.StringToHash("MoveZ");
         jumpAnimation = Animator.StringToHash("Pistol Jump");
         recoilAnimation = Animator.StringToHash("Pistol Shoot Recoil");
+        runAnimation = Animator.StringToHash("Run");
+        walkAnimation = Animator.StringToHash("Walk");
+    }
+
+    private void Start()
+    {
+        runAction.started += _ =>
+        {
+            targetSpeed = runSpeed;
+            animator.CrossFade(runAnimation, animationPlayTransition);
+        };
+        runAction.canceled += _ =>
+        {
+            targetSpeed = moveSpeed; 
+            animator.CrossFade(walkAnimation, animationPlayTransition);
+        };
     }
 
     private void OnEnable()
     {
         shootAction.performed += _ => ShootGun();
+        
+        // actionReference.action.Enable();
     }
 
     private void OnDisable()
     {
         shootAction.performed -= _ => ShootGun();
+        actionReference.action.Disable();
     }
+
+   
 
     void Update()
     {
@@ -78,7 +104,7 @@ public class PlayerController : MonoBehaviour
         Vector3 move = new Vector3(currentAnimationBlendVector.x, 0, currentAnimationBlendVector.y);
         move = move.x * cameraTransform.right.normalized + move.z * cameraTransform.forward.normalized;
         move.y = 0f;
-        controller.Move(move * Time.deltaTime * playerSpeed);
+        controller.Move(move * Time.deltaTime * targetSpeed);
 
 
         // Changes the height position of the player..
@@ -119,5 +145,9 @@ public class PlayerController : MonoBehaviour
             bulletController.Hit = false;
         }
         animator.CrossFade(recoilAnimation, animationPlayTransition);
+    }
+    private void Run()
+    {
+        targetSpeed = runSpeed;
     }
 }

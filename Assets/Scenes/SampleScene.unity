@@ -1337,7 +1337,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e89ed04d48780843bcc89f796d99efe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerSpeed: 2
+  moveSpeed: 2
+  runSpeed: 5
   jumpHeight: 1
   gravityValue: -9.81
   rotationSpeed: 5
@@ -1349,6 +1350,7 @@ MonoBehaviour:
   animationPlayTransition: 0.15
   aimTarget: {fileID: 1282829903}
   aimDistance: 10
+  actionReference: {fileID: -7284073837234169256, guid: 2c1b9fd6767a5204e93b9e7bcae25fab, type: 3}
 --- !u!143 &1505534596
 CharacterController:
   m_ObjectHideFlags: 0
