@@ -7,13 +7,14 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     public float targetSpeed;
+    public Transform barrelTransform;
     [SerializeField] private float moveSpeed = 2.0f;
     [SerializeField] private float runSpeed = 5.0f;
     [SerializeField] private float jumpHeight = 1.0f;
     [SerializeField] private float gravityValue = -9.81f;
     [SerializeField] private float rotationSpeed = 5f;
     [SerializeField] private GameObject bulletPrefab;
-    [SerializeField] private Transform barrelTransform;
+    
     [SerializeField] private Transform bulletParent;
     [SerializeField] private float bulletHitMissDistance = 25f;
     [SerializeField] private float animationSmoothTime = 0.1f;
@@ -45,6 +46,7 @@ public class PlayerController : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
         playerInput = GetComponent<PlayerInput>();
+        gunSelector = GetComponent<GunSelector>();
         
         moveAction = playerInput.actions["Move"];
         jumpAction = playerInput.actions["Jump"];
@@ -74,6 +76,7 @@ public class PlayerController : MonoBehaviour
     {
         runAction.started += _ => { Run(); };
         runAction.canceled += _ => { Walk(); };
+        gunSelector.SwitchGun("Pistol");
     }
 
     private void OnEnable()

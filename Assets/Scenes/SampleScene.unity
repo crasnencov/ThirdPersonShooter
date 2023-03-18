@@ -1018,6 +1018,16 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8488554265402997904, guid: 8c2e2219a233f67448a9c861af123066, type: 3}
   m_PrefabInstance: {fileID: 8488554264171026177}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1273018447 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5581795387695698468, guid: aeed68db3e5d1034eac77a12d73c81d2, type: 3}
+  m_PrefabInstance: {fileID: 5581795388107424944}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1273018448 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5581795387695698469, guid: aeed68db3e5d1034eac77a12d73c81d2, type: 3}
+  m_PrefabInstance: {fileID: 5581795388107424944}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1282829902
 GameObject:
   m_ObjectHideFlags: 0
@@ -1106,6 +1116,11 @@ Transform:
   m_Father: {fileID: 6502182839600231989}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1341985295 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3639668188702993141, guid: 089d178db4737f64c9596e9642c0fd45, type: 3}
+  m_PrefabInstance: {fileID: 3639668190133832273}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1342418122
 GameObject:
   m_ObjectHideFlags: 11
@@ -1217,13 +1232,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetSpeed: 0
+  barrelTransform: {fileID: 498870626}
   moveSpeed: 2
   runSpeed: 5
   jumpHeight: 1
   gravityValue: -9.81
   rotationSpeed: 5
   bulletPrefab: {fileID: 3888067022958286203, guid: f5c1db4564ed30c4ab196e0a2c05539e, type: 3}
-  barrelTransform: {fileID: 498870626}
   bulletParent: {fileID: 557823942}
   bulletHitMissDistance: 25
   animationSmoothTime: 0.1
@@ -1471,9 +1486,21 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d27e5cae077961e4088c752a3a41211d, type: 2}
   - {fileID: 11400000, guid: c328849de29454f4ca63f566865e5a7a, type: 2}
   - {fileID: 11400000, guid: 68bd505483e975a41aec610cd6a1d46c, type: 2}
+  armRigs:
+  - {fileID: 1819951475}
+  - {fileID: 546053008}
+  - {fileID: 1771876316}
+  weaponsList:
+  - {fileID: 626577693}
+  - {fileID: 2119660383}
+  - {fileID: 1888053702}
+  - {fileID: 1273018447}
+  barrelsList:
+  - {fileID: 498870626}
+  - {fileID: 1341985295}
+  - {fileID: 1273018448}
   gunParent: {fileID: 443095057}
   armRigParent: {fileID: 1182906694}
-  playerController: {fileID: 1505534595}
 --- !u!1 &1621067809
 GameObject:
   m_ObjectHideFlags: 0
@@ -2891,9 +2918,17 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 443095057}
     m_Modifications:
+    - target: {fileID: 3639668188702993138, guid: 089d178db4737f64c9596e9642c0fd45, type: 3}
+      propertyPath: m_Name
+      value: ShotgunBarrel
+      objectReference: {fileID: 0}
     - target: {fileID: 3639668188895000846, guid: 089d178db4737f64c9596e9642c0fd45, type: 3}
       propertyPath: m_Name
       value: Shotgun
+      objectReference: {fileID: 0}
+    - target: {fileID: 3639668188895000846, guid: 089d178db4737f64c9596e9642c0fd45, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3639668188895000881, guid: 089d178db4737f64c9596e9642c0fd45, type: 3}
       propertyPath: m_RootOrder
@@ -3355,6 +3390,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Machine Gun
       objectReference: {fileID: 0}
+    - target: {fileID: 5581795386236333430, guid: aeed68db3e5d1034eac77a12d73c81d2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5581795386236333431, guid: aeed68db3e5d1034eac77a12d73c81d2, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -3398,6 +3437,10 @@ PrefabInstance:
     - target: {fileID: 5581795386236333431, guid: aeed68db3e5d1034eac77a12d73c81d2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 1.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5581795387695698468, guid: aeed68db3e5d1034eac77a12d73c81d2, type: 3}
+      propertyPath: m_Name
+      value: MachineGunBarrel
       objectReference: {fileID: 0}
     - target: {fileID: 5581795387695698469, guid: aeed68db3e5d1034eac77a12d73c81d2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4225,6 +4268,10 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 443095057}
     m_Modifications:
+    - target: {fileID: 8488554264517852768, guid: 8c2e2219a233f67448a9c861af123066, type: 3}
+      propertyPath: m_Name
+      value: PistolBarrel
+      objectReference: {fileID: 0}
     - target: {fileID: 8488554264662263324, guid: 8c2e2219a233f67448a9c861af123066, type: 3}
       propertyPath: m_Name
       value: Pistol
@@ -4451,6 +4498,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MachineGunArmRig
       objectReference: {fileID: 0}
+    - target: {fileID: 9193441026766981212, guid: 0c295aea9d5939548ab3705fa33a2657, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9193441026766981213, guid: 0c295aea9d5939548ab3705fa33a2657, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -4613,6 +4664,10 @@ PrefabInstance:
     - target: {fileID: 9199641338218690597, guid: 6f91ef060cf7fd7428db90e73e5d0767, type: 3}
       propertyPath: m_Name
       value: ShotgunArmRig
+      objectReference: {fileID: 0}
+    - target: {fileID: 9199641338218690597, guid: 6f91ef060cf7fd7428db90e73e5d0767, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []

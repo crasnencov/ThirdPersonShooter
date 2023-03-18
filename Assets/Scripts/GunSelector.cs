@@ -7,48 +7,48 @@ using UnityEngine.Animations.Rigging;
 public class GunSelector : MonoBehaviour
 {
     public List<GunSO> guns;
+    public List<GameObject> armRigs;
+    public List<GameObject> weaponsList;
+    public List<Transform> barrelsList;
     public Transform gunParent, armRigParent;
-    public PlayerController playerController;
+    private PlayerController playerController;
 
     private RigBuilder rigBuilder;
     private GameObject gunModel, armRig;
 
-    private void Start()
+    private void Awake()
     {
+        playerController = GetComponent<PlayerController>();
         rigBuilder = playerController.GetComponent<RigBuilder>();
     }
 
-    //set active fields rigs, hand job, Pistol, Shotgun, Machine gun
     public void SwitchGun(string gunName)
     {
+        Debug.Log("switch gun = " + gunName);
         for (int i = 0; i < guns.Count; i++)
         {
+            
             if (gunName == guns[i].name)
             {
-                //GameObject.Spawn(transforn position)
-
-                for (int j = 0; j < 2; j++) // rigBuilder.layers[i].Count??
-                {
-                    if (j == i)
-                    {
-                        rigBuilder.layers[i].active = true;
-                    }
-                    else
-                    {
-                        rigBuilder.layers[i].active = false;
-                    }
-                }
-
-                Spawn(i);
+                rigBuilder.layers[i].active = true;
+                armRigs[i].SetActive(true);
+                weaponsList[i].SetActive(true);
+                playerController.barrelTransform = barrelsList[i];
+            }
+            else
+            {
+                rigBuilder.layers[i].active = false;
+                armRigs[i].SetActive(false);
+                weaponsList[i].SetActive(false);
             }
         }
     }
 
-    private void Spawn(int i)
-    {
-        gunModel = Instantiate(guns[i].gunPrefab);
-        gunModel.transform.SetParent(gunParent, false);
-        armRig = Instantiate(guns[i].armRigPrefab);
-        armRig.transform.SetParent(armRigParent, false);
-    }
+    // private void Spawn(int i)
+    // {
+    //     gunModel = Instantiate(guns[i].gunPrefab);
+    //     gunModel.transform.SetParent(gunParent, false);
+    //     armRig = Instantiate(guns[i].armRigPrefab);
+    //     armRig.transform.SetParent(armRigParent, false);
+    // }
 }
