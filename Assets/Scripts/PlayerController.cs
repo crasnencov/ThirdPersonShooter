@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
     private bool groundedPlayer;
 
     private InputAction moveAction, jumpAction, shootAction, runAction;
-    
+
     [SerializeField] private InputActionReference actionReference;
 
     private Transform cameraTransform;
@@ -36,7 +36,8 @@ public class PlayerController : MonoBehaviour
     private Vector2 currentAnimationBlendVector;
     private Vector2 animationVelocity;
     private int jumpAnimation, recoilAnimation, runAnimation, walkAnimation;
-    
+
+    private PlayerGunSelector GunSelector;
 
     private void Awake()
     {
@@ -50,7 +51,7 @@ public class PlayerController : MonoBehaviour
 
         cameraTransform = Camera.main.transform;
         Cursor.lockState = CursorLockMode.Locked;
-        
+
         //Animations
         animator = GetComponent<Animator>();
         moveXAnimationParameterId = Animator.StringToHash("MoveX");
@@ -63,22 +64,15 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        runAction.started += _ =>
-        {
-            targetSpeed = runSpeed;
-            animator.CrossFade(runAnimation, animationPlayTransition);
-        };
-        runAction.canceled += _ =>
-        {
-            targetSpeed = moveSpeed; 
-            animator.CrossFade(walkAnimation, animationPlayTransition);
-        };
+        runAction.started += _ => { Run(); };
+        runAction.canceled += _ => { Walk(); };
+        
     }
 
     private void OnEnable()
     {
         shootAction.performed += _ => ShootGun();
-        
+
         // actionReference.action.Enable();
     }
 
@@ -88,7 +82,6 @@ public class PlayerController : MonoBehaviour
         actionReference.action.Disable();
     }
 
-   
 
     void Update()
     {
@@ -116,12 +109,12 @@ public class PlayerController : MonoBehaviour
 
         playerVelocity.y += gravityValue * Time.deltaTime;
         controller.Move(playerVelocity * Time.deltaTime);
-        
+
         //Turn towards the camera
         float targetAngle = cameraTransform.eulerAngles.y;
         Quaternion targetRotation = Quaternion.Euler(0, targetAngle, 0);
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-        
+
         animator.SetFloat(moveXAnimationParameterId, currentAnimationBlendVector.x);
         animator.SetFloat(moveZAnimationParameterId, currentAnimationBlendVector.y);
 
@@ -144,10 +137,19 @@ public class PlayerController : MonoBehaviour
             bulletController.Target = cameraTransform.position + cameraTransform.forward * bulletHitMissDistance;
             bulletController.Hit = false;
         }
+
         animator.CrossFade(recoilAnimation, animationPlayTransition);
     }
+
     private void Run()
     {
         targetSpeed = runSpeed;
+        animator.CrossFade(runAnimation, animationPlayTransition);
+    }
+
+    private void Walk()
+    {
+        targetSpeed = moveSpeed;
+        animator.CrossFade(walkAnimation, animationPlayTransition);
     }
 }
