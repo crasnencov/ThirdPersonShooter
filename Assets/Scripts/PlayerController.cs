@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController), typeof(PlayerInput))]
@@ -22,11 +23,13 @@ public class PlayerController : MonoBehaviour
 
     private CharacterController controller;
     private PlayerInput playerInput;
+    private GunSelector gunSelector;
     private Vector3 playerVelocity;
     private bool groundedPlayer;
 
     private InputAction moveAction, jumpAction, shootAction, runAction;
-    
+    private InputAction pistolWeaponAction, shotgunWeaponAction, machineGunWeaponAction;
+
     [SerializeField] private InputActionReference actionReference;
 
     private Transform cameraTransform;
@@ -36,21 +39,24 @@ public class PlayerController : MonoBehaviour
     private Vector2 currentAnimationBlendVector;
     private Vector2 animationVelocity;
     private int jumpAnimation, recoilAnimation, runAnimation, walkAnimation;
-    
 
+  
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
         playerInput = GetComponent<PlayerInput>();
-
+        
         moveAction = playerInput.actions["Move"];
         jumpAction = playerInput.actions["Jump"];
         shootAction = playerInput.actions["Shoot"];
         runAction = playerInput.actions["Run"];
+        pistolWeaponAction = playerInput.actions["Pistol"];
+        shotgunWeaponAction = playerInput.actions["Shotgun"];
+        machineGunWeaponAction = playerInput.actions["Machine Gun"];
 
         cameraTransform = Camera.main.transform;
         Cursor.lockState = CursorLockMode.Locked;
-        
+
         //Animations
         animator = GetComponent<Animator>();
         moveXAnimationParameterId = Animator.StringToHash("MoveX");
@@ -59,36 +65,36 @@ public class PlayerController : MonoBehaviour
         recoilAnimation = Animator.StringToHash("Pistol Shoot Recoil");
         runAnimation = Animator.StringToHash("Run");
         walkAnimation = Animator.StringToHash("Walk");
+        
+
+        
     }
 
     private void Start()
     {
-        runAction.started += _ =>
-        {
-            targetSpeed = runSpeed;
-            animator.CrossFade(runAnimation, animationPlayTransition);
-        };
-        runAction.canceled += _ =>
-        {
-            targetSpeed = moveSpeed; 
-            animator.CrossFade(walkAnimation, animationPlayTransition);
-        };
+        runAction.started += _ => { Run(); };
+        runAction.canceled += _ => { Walk(); };
     }
 
     private void OnEnable()
     {
         shootAction.performed += _ => ShootGun();
-        
+        pistolWeaponAction.performed += _ => gunSelector.SwitchGun("Pistol");
+        shotgunWeaponAction.performed += _ => gunSelector.SwitchGun("Shotgun");
+        machineGunWeaponAction.performed += _ => gunSelector.SwitchGun("MachineGun");
+
         // actionReference.action.Enable();
     }
 
     private void OnDisable()
     {
         shootAction.performed -= _ => ShootGun();
+        pistolWeaponAction.performed -= _ => gunSelector.SwitchGun("Pistol");
+        shotgunWeaponAction.performed -= _ => gunSelector.SwitchGun("Shotgun");
+        machineGunWeaponAction.performed -= _ => gunSelector.SwitchGun("MachineGun");
         actionReference.action.Disable();
     }
 
-   
 
     void Update()
     {
@@ -116,12 +122,12 @@ public class PlayerController : MonoBehaviour
 
         playerVelocity.y += gravityValue * Time.deltaTime;
         controller.Move(playerVelocity * Time.deltaTime);
-        
+
         //Turn towards the camera
         float targetAngle = cameraTransform.eulerAngles.y;
         Quaternion targetRotation = Quaternion.Euler(0, targetAngle, 0);
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-        
+
         animator.SetFloat(moveXAnimationParameterId, currentAnimationBlendVector.x);
         animator.SetFloat(moveZAnimationParameterId, currentAnimationBlendVector.y);
 
@@ -131,7 +137,7 @@ public class PlayerController : MonoBehaviour
     private void ShootGun()
     {
         RaycastHit hit;
-        GameObject bullet = GameObject.Instantiate(bulletPrefab, barrelTransform.position, Quaternion.identity,
+        GameObject bullet = Instantiate(bulletPrefab, barrelTransform.position, Quaternion.identity,
             bulletParent);
         BulletController bulletController = bullet.GetComponent<BulletController>();
         if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity))
@@ -144,10 +150,19 @@ public class PlayerController : MonoBehaviour
             bulletController.Target = cameraTransform.position + cameraTransform.forward * bulletHitMissDistance;
             bulletController.Hit = false;
         }
+
         animator.CrossFade(recoilAnimation, animationPlayTransition);
     }
+
     private void Run()
     {
         targetSpeed = runSpeed;
+        animator.CrossFade(runAnimation, animationPlayTransition);
+    }
+
+    private void Walk()
+    {
+        targetSpeed = moveSpeed;
+        animator.CrossFade(walkAnimation, animationPlayTransition);
     }
 }
