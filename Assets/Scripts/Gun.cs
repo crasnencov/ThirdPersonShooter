@@ -20,11 +20,12 @@ public class Gun : MonoBehaviour
     private void Awake()
     {
         playerController = GetComponent<PlayerController>();
-        
+        PlayerController.ReloadAction.performed += _ => StartReload();
     }
 
     private void OnEnable()
     {
+        
 //        PlayerController.ShootAction.performed += _ => Shoot();
     }
 
@@ -40,7 +41,7 @@ public class Gun : MonoBehaviour
         cameraTransform = Camera.main.transform;
         barrelTransform = transform.Find("Barrel");
         PlayerController.ShootAction.performed += _ => Shoot();
-        PlayerController.ReloadAction.performed += _ => StartReload();
+        
 
         recoilAnimation = Animator.StringToHash("Pistol Shoot Recoil");
         // animator = playerController.GetComponent<Animator>();
@@ -85,6 +86,10 @@ public class Gun : MonoBehaviour
             }
             
         }
+        else
+        {
+            Debug.Log("Empty mag!");
+        }
 
         
         
@@ -98,19 +103,11 @@ public class Gun : MonoBehaviour
 
     public void StartReload()
     {
-        if (!gun.reloading)
-        {
-            Debug.Log("Reloading...");
-            StartCoroutine(Reload());
-        }
-    }
-
-    private IEnumerator Reload()
-    {
-        gun.reloading = true;
-        yield return new WaitForSeconds(gun.reloadTime);
         gun.currentAmmo = gun.magSize;
         gun.reloading = false;
         Debug.Log("Reloaded!");
+        
     }
+
+   
 }
