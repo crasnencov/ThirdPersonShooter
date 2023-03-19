@@ -13,5 +13,10 @@ MonoBehaviour:
   m_Name: Pistol
   m_EditorClassIdentifier: 
   name: Pistol
-  gunPrefab: {fileID: 8488554264662263324, guid: 8c2e2219a233f67448a9c861af123066, type: 3}
-  armRigPrefab: {fileID: 8181122025240453063, guid: 37f5c439fb310054789f953194dab691, type: 3}
+  damage: 10
+  maxDistance: 100
+  currentAmmo: 3
+  magSize: 12
+  fireRate: 300
+  reloadTime: 1
+  reloading: 0

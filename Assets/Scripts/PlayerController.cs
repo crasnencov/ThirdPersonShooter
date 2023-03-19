@@ -7,16 +7,14 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     public float targetSpeed;
-    public Transform barrelTransform;
+    
     [SerializeField] private float moveSpeed = 2.0f;
     [SerializeField] private float runSpeed = 5.0f;
     [SerializeField] private float jumpHeight = 1.0f;
     [SerializeField] private float gravityValue = -9.81f;
     [SerializeField] private float rotationSpeed = 5f;
-    [SerializeField] private GameObject bulletPrefab;
     
-    [SerializeField] private Transform bulletParent;
-    [SerializeField] private float bulletHitMissDistance = 25f;
+    
     [SerializeField] private float animationSmoothTime = 0.1f;
     [SerializeField] private float animationPlayTransition = 0.15f;
     [SerializeField] private Transform aimTarget;
@@ -28,14 +26,15 @@ public class PlayerController : MonoBehaviour
     private Vector3 playerVelocity;
     private bool groundedPlayer;
 
-    private InputAction moveAction, jumpAction, shootAction, runAction;
+    private InputAction moveAction, jumpAction,  runAction;
+    public static InputAction ShootAction, ReloadAction;
     private InputAction pistolWeaponAction, shotgunWeaponAction, machineGunWeaponAction;
 
     [SerializeField] private InputActionReference actionReference;
 
     private Transform cameraTransform;
 
-    private Animator animator;
+    public Animator animator;
     private int moveXAnimationParameterId, moveZAnimationParameterId;
     private Vector2 currentAnimationBlendVector;
     private Vector2 animationVelocity;
@@ -50,7 +49,8 @@ public class PlayerController : MonoBehaviour
         
         moveAction = playerInput.actions["Move"];
         jumpAction = playerInput.actions["Jump"];
-        shootAction = playerInput.actions["Shoot"];
+        ShootAction = playerInput.actions["Shoot"];
+        ReloadAction = playerInput.actions["Reload"];
         runAction = playerInput.actions["Run"];
         pistolWeaponAction = playerInput.actions["Pistol"];
         shotgunWeaponAction = playerInput.actions["Shotgun"];
@@ -64,7 +64,7 @@ public class PlayerController : MonoBehaviour
         moveXAnimationParameterId = Animator.StringToHash("MoveX");
         moveZAnimationParameterId = Animator.StringToHash("MoveZ");
         jumpAnimation = Animator.StringToHash("Pistol Jump");
-        recoilAnimation = Animator.StringToHash("Pistol Shoot Recoil");
+        
         runAnimation = Animator.StringToHash("Run");
         walkAnimation = Animator.StringToHash("Walk");
         
@@ -81,7 +81,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnEnable()
     {
-        shootAction.performed += _ => ShootGun();
+        // ShootAction.performed += _ => ShootGun();
         pistolWeaponAction.performed += _ => gunSelector.SwitchGun("Pistol");
         shotgunWeaponAction.performed += _ => gunSelector.SwitchGun("Shotgun");
         machineGunWeaponAction.performed += _ => gunSelector.SwitchGun("MachineGun");
@@ -91,7 +91,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnDisable()
     {
-        shootAction.performed -= _ => ShootGun();
+        // ShootAction.performed -= _ => ShootGun();
         pistolWeaponAction.performed -= _ => gunSelector.SwitchGun("Pistol");
         shotgunWeaponAction.performed -= _ => gunSelector.SwitchGun("Shotgun");
         machineGunWeaponAction.performed -= _ => gunSelector.SwitchGun("MachineGun");
@@ -137,25 +137,25 @@ public class PlayerController : MonoBehaviour
         aimTarget.position = cameraTransform.position + cameraTransform.forward * aimDistance;
     }
 
-    private void ShootGun()
-    {
-        RaycastHit hit;
-        GameObject bullet = Instantiate(bulletPrefab, barrelTransform.position, Quaternion.identity,
-            bulletParent);
-        BulletController bulletController = bullet.GetComponent<BulletController>();
-        if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity))
-        {
-            bulletController.Target = hit.point;
-            bulletController.Hit = true;
-        }
-        else
-        {
-            bulletController.Target = cameraTransform.position + cameraTransform.forward * bulletHitMissDistance;
-            bulletController.Hit = false;
-        }
-
-        animator.CrossFade(recoilAnimation, animationPlayTransition);
-    }
+    // public void ShootGun()
+    // {
+    //     RaycastHit hit;
+    //     GameObject bullet = Instantiate(bulletPrefab, barrelTransform.position, Quaternion.identity,
+    //         bulletParent);
+    //     BulletController bulletController = bullet.GetComponent<BulletController>();
+    //     if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity))
+    //     {
+    //         bulletController.Target = hit.point;
+    //         bulletController.Hit = true;
+    //     }
+    //     else
+    //     {
+    //         bulletController.Target = cameraTransform.position + cameraTransform.forward * bulletHitMissDistance;
+    //         bulletController.Hit = false;
+    //     }
+    //
+    //     animator.CrossFade(recoilAnimation, animationPlayTransition);
+    // }
 
     private void Run()
     {

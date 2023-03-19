@@ -13,5 +13,10 @@ MonoBehaviour:
   m_Name: Shotgun
   m_EditorClassIdentifier: 
   name: Shotgun
-  gunPrefab: {fileID: 3639668188895000846, guid: 089d178db4737f64c9596e9642c0fd45, type: 3}
-  armRigPrefab: {fileID: 9199641338218690597, guid: 6f91ef060cf7fd7428db90e73e5d0767, type: 3}
+  damage: 50
+  maxDistance: 50
+  currentAmmo: 2
+  magSize: 7
+  fireRate: 150
+  reloadTime: 3
+  reloading: 0

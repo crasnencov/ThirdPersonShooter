@@ -13,5 +13,10 @@ MonoBehaviour:
   m_Name: MachineGun
   m_EditorClassIdentifier: 
   name: MachineGun
-  gunPrefab: {fileID: 5581795386236333430, guid: aeed68db3e5d1034eac77a12d73c81d2, type: 3}
-  armRigPrefab: {fileID: 9193441026766981212, guid: 0c295aea9d5939548ab3705fa33a2657, type: 3}
+  damage: 22
+  maxDistance: 200
+  currentAmmo: 31
+  magSize: 31
+  fireRate: 600
+  reloadTime: 1.5
+  reloading: 0

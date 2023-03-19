@@ -12,6 +12,7 @@ public class GunSelector : MonoBehaviour
     public List<Transform> barrelsList;
     public Transform gunParent, armRigParent;
     private PlayerController playerController;
+    // private Gun gun;
 
     private RigBuilder rigBuilder;
     private GameObject gunModel, armRig;
@@ -24,7 +25,7 @@ public class GunSelector : MonoBehaviour
 
     public void SwitchGun(string gunName)
     {
-        Debug.Log("switch gun = " + gunName);
+        // Debug.Log("switch gun = " + gunName);
         for (int i = 0; i < guns.Count; i++)
         {
             
@@ -33,7 +34,7 @@ public class GunSelector : MonoBehaviour
                 rigBuilder.layers[i].active = true;
                 armRigs[i].SetActive(true);
                 weaponsList[i].SetActive(true);
-                playerController.barrelTransform = barrelsList[i];
+                // gun.barrelTransform = barrelsList[i];
             }
             else
             {
