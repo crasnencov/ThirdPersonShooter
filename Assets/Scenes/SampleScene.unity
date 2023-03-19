@@ -201,7 +201,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5446623438278611167, guid: 6908b2e6871a371419758aa1b932c835, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.4866607
+      value: 1.3042883
       objectReference: {fileID: 0}
     - target: {fileID: 5446623438278611167, guid: 6908b2e6871a371419758aa1b932c835, type: 3}
       propertyPath: m_LocalPosition.y
@@ -955,7 +955,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0.025915237, y: 0, z: 0, w: 0.9996641}
-  m_LocalPosition: {x: 1.4866607, y: 2.652916, z: -3.576155}
+  m_LocalPosition: {x: 1.3042883, y: 2.652916, z: -3.576155}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3122,7 +3122,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3639668188895000846, guid: 089d178db4737f64c9596e9642c0fd45, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3639668188895000881, guid: 089d178db4737f64c9596e9642c0fd45, type: 3}
       propertyPath: m_RootOrder
@@ -4469,6 +4469,10 @@ PrefabInstance:
     - target: {fileID: 8488554264662263324, guid: 8c2e2219a233f67448a9c861af123066, type: 3}
       propertyPath: m_Name
       value: Pistol
+      objectReference: {fileID: 0}
+    - target: {fileID: 8488554264662263324, guid: 8c2e2219a233f67448a9c861af123066, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8488554264662263327, guid: 8c2e2219a233f67448a9c861af123066, type: 3}
       propertyPath: m_RootOrder
