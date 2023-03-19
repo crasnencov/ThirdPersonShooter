@@ -38,7 +38,8 @@ public class PlayerController : MonoBehaviour
     private int moveXAnimationParameterId, moveZAnimationParameterId;
     private Vector2 currentAnimationBlendVector;
     private Vector2 animationVelocity;
-    private int jumpAnimation, recoilAnimation, runAnimation, walkAnimation;
+    private int jumpAnimation, runAnimation, walkAnimation;
+    private int pistolRecoilAnimation, shotgunRecoilAnimation, machinegunRecoilAnimation;
 
   
     private void Awake()
@@ -64,7 +65,10 @@ public class PlayerController : MonoBehaviour
         moveXAnimationParameterId = Animator.StringToHash("MoveX");
         moveZAnimationParameterId = Animator.StringToHash("MoveZ");
         jumpAnimation = Animator.StringToHash("Pistol Jump");
-        
+        pistolRecoilAnimation = Animator.StringToHash("Pistol Shoot Recoil");
+        shotgunRecoilAnimation = Animator.StringToHash("Shotgun Shoot Recoil");
+        machinegunRecoilAnimation = Animator.StringToHash("Machinegun Shoot Recoil");
+
         runAnimation = Animator.StringToHash("Run");
         walkAnimation = Animator.StringToHash("Walk");
         
@@ -137,25 +141,12 @@ public class PlayerController : MonoBehaviour
         aimTarget.position = cameraTransform.position + cameraTransform.forward * aimDistance;
     }
 
-    // public void ShootGun()
-    // {
-    //     RaycastHit hit;
-    //     GameObject bullet = Instantiate(bulletPrefab, barrelTransform.position, Quaternion.identity,
-    //         bulletParent);
-    //     BulletController bulletController = bullet.GetComponent<BulletController>();
-    //     if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity))
-    //     {
-    //         bulletController.Target = hit.point;
-    //         bulletController.Hit = true;
-    //     }
-    //     else
-    //     {
-    //         bulletController.Target = cameraTransform.position + cameraTransform.forward * bulletHitMissDistance;
-    //         bulletController.Hit = false;
-    //     }
-    //
-    //     animator.CrossFade(recoilAnimation, animationPlayTransition);
-    // }
+    public void ShootGun()
+    {
+        animator.CrossFade(pistolRecoilAnimation, animationPlayTransition);
+        animator.CrossFade(shotgunRecoilAnimation, animationPlayTransition);
+        animator.CrossFade(machinegunRecoilAnimation, animationPlayTransition);
+    }
 
     private void Run()
     {
