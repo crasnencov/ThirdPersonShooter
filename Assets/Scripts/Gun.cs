@@ -15,12 +15,13 @@ public class Gun : MonoBehaviour
     private Animator animator;
     private int recoilAnimation;
     [SerializeField] private float animationPlayTransition = 0.15f;
-    private PlayerController playerController;
+    // private PlayerController playerController;
     private float timeSinceLastShot;
+    private ParticleSystem muzzleFlash;
     private void Awake()
     {
-        playerController = GetComponent<PlayerController>();
-        PlayerController.ReloadAction.performed += _ => StartReload();
+        // playerController = GetComponent<PlayerController>();
+        
     }
 
     private void OnEnable()
@@ -41,7 +42,8 @@ public class Gun : MonoBehaviour
         cameraTransform = Camera.main.transform;
         barrelTransform = transform.Find("Barrel");
         PlayerController.ShootAction.performed += _ => Shoot();
-        
+        muzzleFlash = transform.Find("MuzzleFlash").GetComponent<ParticleSystem>();
+        PlayerController.ReloadAction.performed += _ => StartReload();
 
         recoilAnimation = Animator.StringToHash("Pistol Shoot Recoil");
         // animator = playerController.GetComponent<Animator>();
@@ -99,6 +101,7 @@ public class Gun : MonoBehaviour
     private void OnGunShot()
     {
         //for fx
+        muzzleFlash.Emit(1);
     }
 
     public void StartReload()
