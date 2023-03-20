@@ -18,6 +18,7 @@ public class Gun : MonoBehaviour
     // private PlayerController playerController;
     private float timeSinceLastShot;
     private ParticleSystem muzzleFlash;
+    private ParticleSystem hitEffect;
     private void Awake()
     {
         // playerController = GetComponent<PlayerController>();
@@ -42,11 +43,13 @@ public class Gun : MonoBehaviour
         cameraTransform = Camera.main.transform;
         barrelTransform = transform.Find("Barrel");
         PlayerController.ShootAction.performed += _ => Shoot();
-        muzzleFlash = transform.Find("MuzzleFlash").GetComponent<ParticleSystem>();
+        
         PlayerController.ReloadAction.performed += _ => StartReload();
 
         recoilAnimation = Animator.StringToHash("Pistol Shoot Recoil");
         // animator = playerController.GetComponent<Animator>();
+        muzzleFlash = transform.Find("MuzzleFlash").GetComponent<ParticleSystem>();
+        hitEffect = transform.Find("HitEffect").GetComponent<ParticleSystem>();
     }
 
     private void Update()
@@ -72,9 +75,14 @@ public class Gun : MonoBehaviour
                     
                     bulletController.Target = hit.point;
                     bulletController.Hit = true;
+                    
                     Debug.Log(hit.transform.name);
                     IDamageable damageable = hit.transform.GetComponent<IDamageable>();
                     damageable?.TakeDamage(gun.damage);
+                    var transform1 = hitEffect.transform;
+                    transform1.position = hit.point;
+                    transform1.forward = hit.normal;
+                    hitEffect.Emit(1);
                 }
                 else
                 {
