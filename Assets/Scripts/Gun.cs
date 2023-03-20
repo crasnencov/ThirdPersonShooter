@@ -1,11 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class Gun : MonoBehaviour
 {
     public GunSO gun;
+    public TrailRenderer bulletTracer;
     [SerializeField] private GameObject bulletPrefab;
     
     [SerializeField] private Transform bulletParent;
@@ -19,6 +22,7 @@ public class Gun : MonoBehaviour
     private float timeSinceLastShot;
     private ParticleSystem muzzleFlash;
     private ParticleSystem hitEffect;
+    Ray ray;
     private void Awake()
     {
         // playerController = GetComponent<PlayerController>();
@@ -67,9 +71,14 @@ public class Gun : MonoBehaviour
             {
                 Debug.Log("shoot");
                 RaycastHit hit;
-                GameObject bullet = Instantiate(bulletPrefab, barrelTransform.position, Quaternion.identity,
+                var barrelTransformPosition = barrelTransform.position;
+                GameObject bullet = Instantiate(bulletPrefab, barrelTransformPosition, Quaternion.identity,
                     bulletParent);
                 BulletController bulletController = bullet.GetComponent<BulletController>();
+                
+                ray.origin = barrelTransformPosition;
+                var tracer = Instantiate(bulletTracer, barrelTransformPosition, quaternion.identity);
+                tracer.AddPosition(barrelTransformPosition);
                 if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, Mathf.Infinity))
                 {
                     
@@ -83,6 +92,8 @@ public class Gun : MonoBehaviour
                     transform1.position = hit.point;
                     transform1.forward = hit.normal;
                     hitEffect.Emit(1);
+
+                    tracer.transform.position = hit.point;
                 }
                 else
                 {
@@ -110,6 +121,7 @@ public class Gun : MonoBehaviour
     {
         //for fx
         muzzleFlash.Emit(1);
+        
     }
 
     public void StartReload()

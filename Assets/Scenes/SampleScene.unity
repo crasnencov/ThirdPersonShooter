@@ -790,6 +790,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gun: {fileID: 11400000, guid: d27e5cae077961e4088c752a3a41211d, type: 2}
+  bulletTracer: {fileID: 8286814387307575675, guid: 9059d47e5514e5d42ae03f4bc6af1238, type: 3}
   bulletPrefab: {fileID: 3888067022958286203, guid: f5c1db4564ed30c4ab196e0a2c05539e, type: 3}
   bulletParent: {fileID: 557823942}
   barrelTransform: {fileID: 0}
@@ -1567,15 +1568,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4300533007854612, guid: ad2ab49d0a2a17148bd51c93d977bdbc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.23391613
+      value: -0.1404
       objectReference: {fileID: 0}
     - target: {fileID: 4300533007854612, guid: ad2ab49d0a2a17148bd51c93d977bdbc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.9474515
+      value: 2.1449
       objectReference: {fileID: 0}
     - target: {fileID: 4300533007854612, guid: ad2ab49d0a2a17148bd51c93d977bdbc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.8007221
+      value: 1.4317
       objectReference: {fileID: 0}
     - target: {fileID: 4300533007854612, guid: ad2ab49d0a2a17148bd51c93d977bdbc, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2516,6 +2517,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gun: {fileID: 11400000, guid: 68bd505483e975a41aec610cd6a1d46c, type: 2}
+  bulletTracer: {fileID: 8286814387307575675, guid: 9059d47e5514e5d42ae03f4bc6af1238, type: 3}
   bulletPrefab: {fileID: 3888067022958286203, guid: f5c1db4564ed30c4ab196e0a2c05539e, type: 3}
   bulletParent: {fileID: 557823942}
   barrelTransform: {fileID: 0}
@@ -2762,6 +2764,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gun: {fileID: 11400000, guid: c328849de29454f4ca63f566865e5a7a, type: 2}
+  bulletTracer: {fileID: 8286814387307575675, guid: 9059d47e5514e5d42ae03f4bc6af1238, type: 3}
   bulletPrefab: {fileID: 3888067022958286203, guid: f5c1db4564ed30c4ab196e0a2c05539e, type: 3}
   bulletParent: {fileID: 557823942}
   barrelTransform: {fileID: 0}
