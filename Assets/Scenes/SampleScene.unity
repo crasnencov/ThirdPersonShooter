@@ -412,6 +412,85 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6585859375582863833, guid: 64ad1a5eaf55b4e468b62db53a7affe9, type: 3}
   m_PrefabInstance: {fileID: 314188471}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &371256360
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 2
+    m_TransformParent: {fileID: 1769805517}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: c65dc58297ece9445b70a06319397b17, type: 3}
+      propertyPath: m_RootOrder
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c65dc58297ece9445b70a06319397b17, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c65dc58297ece9445b70a06319397b17, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c65dc58297ece9445b70a06319397b17, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c65dc58297ece9445b70a06319397b17, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 4.256476
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c65dc58297ece9445b70a06319397b17, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c65dc58297ece9445b70a06319397b17, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.7434387
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c65dc58297ece9445b70a06319397b17, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c65dc58297ece9445b70a06319397b17, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c65dc58297ece9445b70a06319397b17, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c65dc58297ece9445b70a06319397b17, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c65dc58297ece9445b70a06319397b17, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c65dc58297ece9445b70a06319397b17, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c65dc58297ece9445b70a06319397b17, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c65dc58297ece9445b70a06319397b17, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c65dc58297ece9445b70a06319397b17, type: 3}
+      propertyPath: m_Name
+      value: Zombiegirl W Kurniawan
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: c65dc58297ece9445b70a06319397b17, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: d160da0c982e5984d8b704df2e15a27e, type: 2}
+    m_RemovedComponents: []
+    m_AddedGameObjects: []
+  m_SourcePrefab: {fileID: 100100000, guid: c65dc58297ece9445b70a06319397b17, type: 3}
 --- !u!1 &443095056
 GameObject:
   m_ObjectHideFlags: 0
@@ -1523,6 +1602,8 @@ MonoBehaviour:
     _prefab: Assets/Prefabs/MachineGunArmRig.prefab
   - _gameObject: {fileID: 1307977281}
     _prefab: Assets/Prefabs/3rdPerson Cinemachine.prefab
+  - _gameObject: {fileID: 1356372944}
+    _prefab: Assets/Models/zombie girl/Zombiegirl W Kurniawan.fbx
 --- !u!4 &1342418124
 Transform:
   m_ObjectHideFlags: 11
@@ -1538,6 +1619,16 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1356372944 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: c65dc58297ece9445b70a06319397b17, type: 3}
+  m_PrefabInstance: {fileID: 371256360}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1356372945 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c65dc58297ece9445b70a06319397b17, type: 3}
+  m_PrefabInstance: {fileID: 371256360}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1421778647
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2195,6 +2286,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1799362964}
+  - {fileID: 1356372945}
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
