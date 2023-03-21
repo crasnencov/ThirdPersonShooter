@@ -16,14 +16,14 @@ public class EnemyController : MonoBehaviour, IDamageable
     public Transform patrolRoute;
     public List<Transform> locations;
     public Transform player;
-    
+    public float dieForce;
     private float blinkTimer;
 
 
     private int enemyIdleAnimation, enemyWalkAnimation;
     private Animator animator;
     private NavMeshAgent agent;
-
+    private UIHealthBar healthBar;
     private Ragdoll ragdoll;
 
     Renderer[] rend;
@@ -33,13 +33,14 @@ public class EnemyController : MonoBehaviour, IDamageable
 
     private int locationIndex = 0;
 
-    
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
         enemyIdleAnimation = Animator.StringToHash("Idle");
         enemyWalkAnimation = Animator.StringToHash("Walk");
     }
+
     void Start()
     {
         InitializePatrolRoute();
@@ -47,6 +48,8 @@ public class EnemyController : MonoBehaviour, IDamageable
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         ragdoll = GetComponent<Ragdoll>();
+        healthBar = GetComponentInChildren<UIHealthBar>();
+
         currentHealth = maxHealth;
         var rigidBodies = GetComponentsInChildren<Rigidbody>();
         foreach (var rigidBody in rigidBodies)
@@ -58,13 +61,13 @@ public class EnemyController : MonoBehaviour, IDamageable
         // rend = GetComponent<Renderer> ();
         rend = GetComponentsInChildren<Renderer>();
         takingDamage = Animator.StringToHash("Taking Damage");
-        
+
         MoveToNextLocation();
-        Debug.Log("move to next start" );
+        Debug.Log("move to next start");
         player = GameObject.Find("Player").transform;
     }
 
-   
+
     void Update()
     {
         //agent.destination = playerTransform.position;
@@ -73,7 +76,7 @@ public class EnemyController : MonoBehaviour, IDamageable
         if (agent.remainingDistance < 0.02f && !agent.pathPending)
         {
             MoveToNextLocation();
-            Debug.Log("move to next update" );
+            Debug.Log("move to next update");
         }
     }
 
@@ -83,20 +86,19 @@ public class EnemyController : MonoBehaviour, IDamageable
         currentHealth -= damage;
         if (currentHealth <= 0)
         {
-            Die();
+            Die(direction);
         }
 
-        // blinkTimer = blinkDuration;
-        // foreach (var t in rend)
-        // {
-        //     t.material.color =  Color.red;
-        // }
+        healthBar.SetHealthBarPercentage(currentHealth / maxHealth);
         // animator.CrossFade(takingDamage, animationPlayTransition);
     }
 
-    public void Die()
+    public void Die(Vector3 direction)
     {
+        direction.y = 1;
         ragdoll.ActivateRagdoll();
+        healthBar.gameObject.SetActive(false);
+        ragdoll.ApplyForce(direction * dieForce);
     }
 
     private void InitializePatrolRoute()
@@ -109,15 +111,16 @@ public class EnemyController : MonoBehaviour, IDamageable
 
     private void MoveToNextLocation()
     {
-        
         if (locations.Count == 0)
         {
             Debug.Log("return");
             return;
         }
-        agent.destination = locations[locationIndex].position;
+
+        // agent.destination = locations[locationIndex].position;
         locationIndex = (locationIndex + 1) % locations.Count;
     }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.name == "Player")
@@ -126,6 +129,7 @@ public class EnemyController : MonoBehaviour, IDamageable
             agent.destination = player.position;
         }
     }
+
     private void OnTriggerExit(Collider other)
     {
         if (other.name == "Player")
