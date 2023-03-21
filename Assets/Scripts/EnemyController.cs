@@ -13,7 +13,10 @@ public class EnemyController : MonoBehaviour, IDamageable
     public float blinkIntensity = 10f;
     public float blinkDuration = 0.1f;
     public Material bodyMaterial;
-
+    public Transform patrolRoute;
+    public List<Transform> locations;
+    public Transform player;
+    
     private float blinkTimer;
 
 
@@ -27,9 +30,20 @@ public class EnemyController : MonoBehaviour, IDamageable
 
     private int takingDamage;
     [SerializeField] private float animationPlayTransition = 0.15f;
-    // Start is called before the first frame update
+
+    private int locationIndex = 0;
+
+    
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+        enemyIdleAnimation = Animator.StringToHash("Idle");
+        enemyWalkAnimation = Animator.StringToHash("Walk");
+    }
     void Start()
     {
+        InitializePatrolRoute();
+        Debug.Log(locationIndex);
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         ragdoll = GetComponent<Ragdoll>();
@@ -44,29 +58,25 @@ public class EnemyController : MonoBehaviour, IDamageable
         // rend = GetComponent<Renderer> ();
         rend = GetComponentsInChildren<Renderer>();
         takingDamage = Animator.StringToHash("Taking Damage");
+        
+        MoveToNextLocation();
+        Debug.Log("move to next start" );
+        player = GameObject.Find("Player").transform;
     }
 
-    // Update is called once per frame
+   
     void Update()
     {
-        agent.destination = playerTransform.position;
+        //agent.destination = playerTransform.position;
         animator.SetFloat("Speed", agent.velocity.magnitude);
-
-        // blinkTimer -= Time.deltaTime;
-        // float lerp = Mathf.Clamp01(blinkTimer / blinkDuration);
-        // float intensity = (lerp * blinkIntensity) + 10.0f;
-        // foreach (var t in rend)
-        // {
-        //     t.material.color = new Color(217,217,217);
-        // }
+        // MoveToNextLocation();
+        if (agent.remainingDistance < 0.02f && !agent.pathPending)
+        {
+            MoveToNextLocation();
+            Debug.Log("move to next update" );
+        }
     }
 
-    private void Awake()
-    {
-        animator = GetComponent<Animator>();
-        enemyIdleAnimation = Animator.StringToHash("Idle");
-        enemyWalkAnimation = Animator.StringToHash("Walk");
-    }
 
     public void TakeDamage(float damage, Vector3 direction)
     {
@@ -87,5 +97,40 @@ public class EnemyController : MonoBehaviour, IDamageable
     public void Die()
     {
         ragdoll.ActivateRagdoll();
+    }
+
+    private void InitializePatrolRoute()
+    {
+        foreach (Transform child in patrolRoute)
+        {
+            locations.Add(child);
+        }
+    }
+
+    private void MoveToNextLocation()
+    {
+        
+        if (locations.Count == 0)
+        {
+            Debug.Log("return");
+            return;
+        }
+        agent.destination = locations[locationIndex].position;
+        locationIndex = (locationIndex + 1) % locations.Count;
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.name == "Player")
+        {
+            Debug.Log("Player detected - attack!");
+            agent.destination = player.position;
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.name == "Player")
+        {
+            Debug.Log("Player out of range, resume patrol");
+        }
     }
 }
