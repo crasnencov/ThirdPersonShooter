@@ -7,17 +7,28 @@ using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour, IDamageable
 {
-    public float health = 100f;
+    public float maxHealth = 100f;
+    public float currentHealth;
     public Transform playerTransform;
     
     private int  enemyIdleAnimation, enemyWalkAnimation; 
     private Animator animator;
     private NavMeshAgent agent;
+
+    private Ragdoll ragdoll;
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
+        ragdoll = GetComponent<Ragdoll>();
+        currentHealth = maxHealth;
+        var rigidBodies = GetComponentsInChildren<Rigidbody>();
+        foreach (var rigidBody  in rigidBodies)
+        {
+            HitBox hitBox = rigidBody.gameObject.AddComponent<HitBox>();
+            hitBox.enemyController = this;
+        }   
     }
 
     // Update is called once per frame
@@ -34,12 +45,18 @@ public class EnemyController : MonoBehaviour, IDamageable
         
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, Vector3 direction)
     {
-        health -= damage;
-        if (health<=0)
+        currentHealth -= damage;
+        if (currentHealth<=0)
         {
-            Destroy(gameObject);
+            Die();
         }
+    }
+
+    public void Die()
+    {
+        ragdoll.ActivateRagdoll();
+
     }
 }

@@ -87,13 +87,18 @@ public class Gun : MonoBehaviour
                     
                     Debug.Log(hit.transform.name);
                     IDamageable damageable = hit.transform.GetComponent<IDamageable>();
-                    damageable?.TakeDamage(gun.damage);
+                    damageable?.TakeDamage(gun.damage, ray.direction);
                     var transform1 = hitEffect.transform;
                     transform1.position = hit.point;
                     transform1.forward = hit.normal;
                     hitEffect.Emit(1);
 
                     tracer.transform.position = hit.point;
+                    var hitBox = hit.collider.GetComponent<HitBox>();
+                    if (hitBox)
+                    {
+                        hitBox.OnRaycastHit(this, ray.direction);
+                    }
                 }
                 else
                 {
