@@ -9,7 +9,7 @@ public class EnemyController : MonoBehaviour, IDamageable
 {
     public float maxHealth = 100f;
     public float currentHealth;
-    
+    public Transform playerTransform;
     public float blinkIntensity = 10f;
     public float blinkDuration = 0.1f;
     public Material bodyMaterial;
@@ -64,17 +64,20 @@ public class EnemyController : MonoBehaviour, IDamageable
 
         MoveToNextLocation();
         Debug.Log("move to next start");
-        
+        player = GameObject.Find("Player").transform;
     }
 
 
     void Update()
     {
+        //agent.destination = playerTransform.position;
         animator.SetFloat("Speed", agent.velocity.magnitude);
-        // if (agent.remainingDistance < 0.02f && !agent.pathPending) {
-        //     MoveToNextLocation();
-        //     Debug.Log("move to next update");
-        // }
+        // MoveToNextLocation();
+        if (agent.remainingDistance < 0.02f && !agent.pathPending)
+        {
+            MoveToNextLocation();
+            Debug.Log("move to next update");
+        }
     }
 
 
@@ -118,20 +121,20 @@ public class EnemyController : MonoBehaviour, IDamageable
         locationIndex = (locationIndex + 1) % locations.Count;
     }
 
-    // private void OnTriggerEnter(Collider other)
-    // {
-    //     if (other.name == "Player")
-    //     {
-    //         Debug.Log("Player detected - attack!");
-    //         agent.destination = player.position;
-    //     }
-    // }
-    //
-    // private void OnTriggerExit(Collider other)
-    // {
-    //     if (other.name == "Player")
-    //     {
-    //         Debug.Log("Player out of range, resume patrol");
-    //     }
-    // }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.name == "Player")
+        {
+            Debug.Log("Player detected - attack!");
+            agent.destination = player.position;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.name == "Player")
+        {
+            Debug.Log("Player out of range, resume patrol");
+        }
+    }
 }
