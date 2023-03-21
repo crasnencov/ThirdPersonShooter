@@ -32,7 +32,7 @@ public class EnemyController : MonoBehaviour, IDamageable
     [SerializeField] private float animationPlayTransition = 0.15f;
 
     private int locationIndex = 0;
-
+    private bool isDead = false;
 
     private void Awake()
     {
@@ -63,8 +63,8 @@ public class EnemyController : MonoBehaviour, IDamageable
         takingDamage = Animator.StringToHash("Taking Damage");
 
         MoveToNextLocation();
-        Debug.Log("move to next start");
-        player = GameObject.Find("Player").transform;
+        
+        
     }
 
 
@@ -73,10 +73,10 @@ public class EnemyController : MonoBehaviour, IDamageable
         //agent.destination = playerTransform.position;
         animator.SetFloat("Speed", agent.velocity.magnitude);
         // MoveToNextLocation();
-        if (agent.remainingDistance < 0.02f && !agent.pathPending)
+        if (!isDead && agent.remainingDistance < 0.2f && !agent.pathPending)
         {
             MoveToNextLocation();
-            Debug.Log("move to next update");
+            
         }
     }
 
@@ -99,6 +99,8 @@ public class EnemyController : MonoBehaviour, IDamageable
         ragdoll.ActivateRagdoll();
         healthBar.gameObject.SetActive(false);
         ragdoll.ApplyForce(direction * dieForce);
+        gameObject.GetComponent<NavMeshAgent>().enabled = false;
+        isDead = true;
     }
 
     private void InitializePatrolRoute()
@@ -113,11 +115,11 @@ public class EnemyController : MonoBehaviour, IDamageable
     {
         if (locations.Count == 0)
         {
-            Debug.Log("return");
+            
             return;
         }
 
-        // agent.destination = locations[locationIndex].position;
+        agent.destination = locations[locationIndex].position;
         locationIndex = (locationIndex + 1) % locations.Count;
     }
 
@@ -126,7 +128,7 @@ public class EnemyController : MonoBehaviour, IDamageable
         if (other.name == "Player")
         {
             Debug.Log("Player detected - attack!");
-            agent.destination = player.position;
+            agent.destination = playerTransform.position;
         }
     }
 
