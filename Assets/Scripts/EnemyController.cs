@@ -35,7 +35,8 @@ public class EnemyController : MonoBehaviour, IDamageable
     private bool isDead = false;
     private float timer = 0.0f;
     public float maxTime = 1.0f;
-    public float maxDistance = 5f;
+    public float maxDistanceToPLayer = 5f;
+    private bool isChasingPlayer = false;
 
     private void Awake()
     {
@@ -72,12 +73,21 @@ public class EnemyController : MonoBehaviour, IDamageable
     void Update()
     {
         //agent.destination = playerTransform.position;
-        animator.SetFloat("Speed", agent.velocity.magnitude);
+        if (!isChasingPlayer)
+        {
+            animator.SetFloat("Speed", agent.velocity.magnitude);
+            agent.speed = 2;
+        }
+        else
+        {
+            animator.SetFloat("Speed", 5);
+            agent.speed = 5;
+        }
 
-        if (!isDead && agent.remainingDistance < 0.2f && !agent.pathPending)
+
+        if (!isDead && agent.remainingDistance < agent.stoppingDistance && !agent.pathPending)
         {
             MoveToNextLocation();
-            
         }
 
         // if (!agent.hasPath)
@@ -88,11 +98,15 @@ public class EnemyController : MonoBehaviour, IDamageable
 
         var distance = Vector3.Distance(transform.position, playerTransform.position);
         Debug.Log("distance" + distance);
-        if (distance < maxDistance)
+        if (!isDead && distance < maxDistanceToPLayer)
         {
-            agent.destination = playerTransform.position;
+            MoveToPLayer();
         }
-        
+        else
+        {
+            isChasingPlayer = false;
+        }
+
         // Vector3 direction = playerTransform.position - agent.destination;
         // direction.y = 0;
         // if (direction.sqrMagnitude > maxDistance * maxDistance)
@@ -148,20 +162,20 @@ public class EnemyController : MonoBehaviour, IDamageable
         locationIndex = (locationIndex + 1) % locations.Count;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void MoveToPLayer()
     {
-        if (other.name == "Player")
+        isChasingPlayer = true;
+        
+        var distance = Vector3.Distance(transform.position, playerTransform.position);
+        if (distance <= maxDistanceToPLayer)
         {
-            Debug.Log("Player detected - attack!");
             agent.destination = playerTransform.position;
+            animator.SetFloat("Speed", 0f, 0.3f, Time.deltaTime);
         }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.name == "Player")
+        else
         {
-            Debug.Log("Player out of range, resume patrol");
+            agent.speed = 5;
+            animator.SetFloat("Speed", 5f, 0.3f, Time.deltaTime);
         }
     }
 }
