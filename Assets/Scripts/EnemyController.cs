@@ -33,6 +33,9 @@ public class EnemyController : MonoBehaviour, IDamageable
 
     private int locationIndex = 0;
     private bool isDead = false;
+    private float timer = 0.0f;
+    public float maxTime = 1.0f;
+    public float maxDistance = 5f;
 
     private void Awake()
     {
@@ -62,9 +65,7 @@ public class EnemyController : MonoBehaviour, IDamageable
         rend = GetComponentsInChildren<Renderer>();
         takingDamage = Animator.StringToHash("Taking Damage");
 
-        MoveToNextLocation();
-        
-        
+        // MoveToNextLocation();
     }
 
 
@@ -72,12 +73,37 @@ public class EnemyController : MonoBehaviour, IDamageable
     {
         //agent.destination = playerTransform.position;
         animator.SetFloat("Speed", agent.velocity.magnitude);
-        // MoveToNextLocation();
+
         if (!isDead && agent.remainingDistance < 0.2f && !agent.pathPending)
         {
             MoveToNextLocation();
             
         }
+
+        // if (!agent.hasPath)
+        // {
+        //     agent.destination = playerTransform.position;
+        // }
+        // agent.destination = playerTransform.position;
+
+        var distance = Vector3.Distance(transform.position, playerTransform.position);
+        Debug.Log("distance" + distance);
+        if (distance < maxDistance)
+        {
+            agent.destination = playerTransform.position;
+        }
+        
+        // Vector3 direction = playerTransform.position - agent.destination;
+        // direction.y = 0;
+        // if (direction.sqrMagnitude > maxDistance * maxDistance)
+        // {
+        //     if (agent.pathStatus != NavMeshPathStatus.PathPartial)
+        //     {
+        //         agent.destination = playerTransform.position;
+        //     }
+        //     
+        //
+        // }
     }
 
 
@@ -115,7 +141,6 @@ public class EnemyController : MonoBehaviour, IDamageable
     {
         if (locations.Count == 0)
         {
-            
             return;
         }
 

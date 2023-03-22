@@ -1899,6 +1899,8 @@ MonoBehaviour:
   player: {fileID: 0}
   dieForce: 0
   animationPlayTransition: 0.15
+  maxTime: 1
+  maxDistance: 1
 --- !u!1 &229435341 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8345070699079395523, guid: 09aade0ecefd01e4b8f7661acf64f5c2, type: 3}
@@ -4032,6 +4034,8 @@ MonoBehaviour:
   player: {fileID: 0}
   dieForce: 0
   animationPlayTransition: 0.15
+  maxTime: 1
+  maxDistance: 1
 --- !u!1 &1043602214 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -1781356600409242780, guid: c65dc58297ece9445b70a06319397b17, type: 3}
@@ -5001,6 +5005,8 @@ MonoBehaviour:
   player: {fileID: 0}
   dieForce: 10
   animationPlayTransition: 0.15
+  maxTime: 1
+  maxDistance: 5
 --- !u!195 &1356372949
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -7927,6 +7933,8 @@ MonoBehaviour:
   player: {fileID: 0}
   dieForce: 0
   animationPlayTransition: 0.15
+  maxTime: 1
+  maxDistance: 1
 --- !u!1 &1819951475 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8181122025240453063, guid: 37f5c439fb310054789f953194dab691, type: 3}
