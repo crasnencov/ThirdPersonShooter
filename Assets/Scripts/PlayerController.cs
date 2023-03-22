@@ -46,8 +46,8 @@ public class PlayerController : MonoBehaviour
 
     private bool playerIsDead = false;
     private PlayerHealthBar healthBar;
-    
 
+    Ragdoll ragdoll;
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
@@ -77,6 +77,7 @@ public class PlayerController : MonoBehaviour
 
         runAnimation = Animator.StringToHash("Run");
         walkAnimation = Animator.StringToHash("Walk");
+        ragdoll = GetComponent<Ragdoll>();
     }
 
     private void Start()
@@ -166,14 +167,7 @@ public class PlayerController : MonoBehaviour
         animator.CrossFade(walkAnimation, animationPlayTransition);
     }
 
-    private void Die()
-    {
-        if (currentPlayerHealth <= 0)
-        {
-            playerIsDead = true;
-            Debug.Log("Dead");
-        }
-    }
+    
 
     public void PlayerTakeDamage(float damage)
     {
@@ -182,6 +176,15 @@ public class PlayerController : MonoBehaviour
         if (!playerIsDead && currentPlayerHealth <= 0)
         {
             Die();
+        }
+    }
+    private void Die()
+    {
+        if (currentPlayerHealth <= 0)
+        {
+            playerIsDead = true;
+            ragdoll.ActivateRagdoll();
+            Debug.Log("Dead");
         }
     }
 }
