@@ -5,21 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public class PlayerHealthBar : MonoBehaviour
 {
-    
-    public Vector3 offset;
-    public Image foregroundImage, backgroundImage;
-
-    
-
-    private void Start()
-    {
-   
-    }
-
-    private void LateUpdate()
-    {
-      
-    }
+    public Image foregroundImage;
 
     public void SetHealthBarPercentage(float percentage)
     {

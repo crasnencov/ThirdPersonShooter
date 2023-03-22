@@ -46,6 +46,7 @@ public class PlayerController : MonoBehaviour
 
     private bool playerIsDead = false;
     private PlayerHealthBar healthBar;
+    
 
     private void Awake()
     {
