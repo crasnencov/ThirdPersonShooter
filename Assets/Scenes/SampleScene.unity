@@ -2016,6 +2016,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetSpeed: 0
+  maxPlayerHealth: 100
+  currentPlayerHealth: 0
   moveSpeed: 3
   runSpeed: 7
   jumpHeight: 1
@@ -4918,6 +4920,14 @@ PrefabInstance:
       propertyPath: playerTransform
       value: 
       objectReference: {fileID: 1505534601}
+    - target: {fileID: 6620612736439816346, guid: 459b1d6beae22ee4b8f4ca04ef650691, type: 3}
+      propertyPath: playerController
+      value: 
+      objectReference: {fileID: 1505534595}
+    - target: {fileID: 6620612736439816347, guid: 459b1d6beae22ee4b8f4ca04ef650691, type: 3}
+      propertyPath: m_StoppingDistance
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 6659589414993854605, guid: 459b1d6beae22ee4b8f4ca04ef650691, type: 3}
       propertyPath: m_RootOrder
       value: -1

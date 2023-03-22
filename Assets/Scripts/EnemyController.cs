@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using UnityEngine.Animations.Rigging;
 using UnityEngine;
 using UnityEngine.AI;
@@ -15,7 +16,8 @@ public class EnemyController : MonoBehaviour, IDamageable
     public Material bodyMaterial;
     public Transform patrolRoute;
     public List<Transform> locations;
-    public Transform player;
+    private PlayerController playerController;
+
     public float dieForce;
     private float blinkTimer;
 
@@ -28,19 +30,24 @@ public class EnemyController : MonoBehaviour, IDamageable
 
     Renderer[] rend;
 
-    private int takingDamage;
+    private int takingDamage, attack;
     [SerializeField] private float animationPlayTransition = 0.15f;
 
     private int locationIndex = 0;
     private bool isDead = false;
     private float timer = 0.0f;
     public float maxTime = 1.0f;
-    public float maxDistanceToPLayer = 5f;
+    public float maxDistanceToPlayer = 5f;
     private bool isChasingPlayer = false;
 
+    public int damage = 10;
+    public float attackSpeed = 1.5f;
+    private bool canAttack = false;
+    private float timeOfLastAttack;
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        playerController = GameObject.Find("Player").GetComponent<PlayerController>();
         enemyIdleAnimation = Animator.StringToHash("Idle");
         enemyWalkAnimation = Animator.StringToHash("Walk");
     }
@@ -65,6 +72,7 @@ public class EnemyController : MonoBehaviour, IDamageable
         // rend = GetComponent<Renderer> ();
         rend = GetComponentsInChildren<Renderer>();
         takingDamage = Animator.StringToHash("Taking Damage");
+        attack = Animator.StringToHash("Attack");
 
         // MoveToNextLocation();
     }
@@ -73,32 +81,29 @@ public class EnemyController : MonoBehaviour, IDamageable
     void Update()
     {
         //agent.destination = playerTransform.position;
-        if (!isChasingPlayer)
-        {
-            animator.SetFloat("Speed", agent.velocity.magnitude);
-            agent.speed = 2;
-        }
-        else
-        {
-            animator.SetFloat("Speed", 5);
-            agent.speed = 5;
-        }
-
+        
+            if (!isChasingPlayer)
+            {
+                animator.SetFloat("Speed", agent.velocity.magnitude);
+                agent.speed = 2;
+            }
+            else
+            {
+                animator.SetFloat("Speed", 5);
+                agent.speed = 5;
+            }
+        
+        
+        
 
         if (!isDead && agent.remainingDistance < agent.stoppingDistance && !agent.pathPending)
         {
             MoveToNextLocation();
         }
 
-        // if (!agent.hasPath)
-        // {
-        //     agent.destination = playerTransform.position;
-        // }
-        // agent.destination = playerTransform.position;
-
         var distance = Vector3.Distance(transform.position, playerTransform.position);
-        Debug.Log("distance" + distance);
-        if (!isDead && distance < maxDistanceToPLayer)
+        
+        if (!isDead && distance < maxDistanceToPlayer)
         {
             MoveToPLayer();
         }
@@ -106,20 +111,7 @@ public class EnemyController : MonoBehaviour, IDamageable
         {
             isChasingPlayer = false;
         }
-
-        // Vector3 direction = playerTransform.position - agent.destination;
-        // direction.y = 0;
-        // if (direction.sqrMagnitude > maxDistance * maxDistance)
-        // {
-        //     if (agent.pathStatus != NavMeshPathStatus.PathPartial)
-        //     {
-        //         agent.destination = playerTransform.position;
-        //     }
-        //     
-        //
-        // }
     }
-
 
     public void TakeDamage(float damage, Vector3 direction)
     {
@@ -165,17 +157,32 @@ public class EnemyController : MonoBehaviour, IDamageable
     private void MoveToPLayer()
     {
         isChasingPlayer = true;
-        
+
         var distance = Vector3.Distance(transform.position, playerTransform.position);
-        if (distance <= maxDistanceToPLayer)
+        if (distance <= maxDistanceToPlayer)
         {
             agent.destination = playerTransform.position;
-            animator.SetFloat("Speed", 0f, 0.3f, Time.deltaTime);
+            // animator.SetFloat("Speed", 0f, 0.3f, Time.deltaTime);
+            isChasingPlayer = false;
+            canAttack = true;
+            if (Time.time >= timeOfLastAttack + attackSpeed)
+            {
+                timeOfLastAttack = Time.time;
+                Attack(damage);
+            }
+            
         }
         else
         {
-            agent.speed = 5;
-            animator.SetFloat("Speed", 5f, 0.3f, Time.deltaTime);
+            // agent.speed = 5;
+            // animator.SetFloat("Speed", 5f, 0.3f, Time.deltaTime);
         }
+    }
+
+    private void Attack(int damage)
+    {
+        
+        animator.CrossFade(attack, animationPlayTransition);
+        playerController.currentPlayerHealth -= damage;
     }
 }

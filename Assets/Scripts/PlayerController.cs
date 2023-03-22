@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.InputSystem;
@@ -7,7 +8,8 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     public float targetSpeed;
-    
+    public int maxPlayerHealth = 100;
+    public int currentPlayerHealth;
     [SerializeField] private float moveSpeed = 2.0f;
     [SerializeField] private float runSpeed = 5.0f;
     [SerializeField] private float jumpHeight = 1.0f;
@@ -41,6 +43,7 @@ public class PlayerController : MonoBehaviour
     private int jumpAnimation, runAnimation, walkAnimation;
     private int pistolRecoilAnimation, shotgunRecoilAnimation, machinegunRecoilAnimation;
 
+    private bool playerIsDead = false;
   
     private void Awake()
     {
@@ -81,6 +84,7 @@ public class PlayerController : MonoBehaviour
         runAction.started += _ => { Run(); };
         runAction.canceled += _ => { Walk(); };
         gunSelector.SwitchGun("Pistol");
+        currentPlayerHealth = maxPlayerHealth;
     }
 
     private void OnEnable()
@@ -139,6 +143,10 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat(moveZAnimationParameterId, currentAnimationBlendVector.y);
 
         aimTarget.position = cameraTransform.position + cameraTransform.forward * aimDistance;
+        if (!playerIsDead && currentPlayerHealth <= 0)
+        {
+            Die();
+        }
     }
 
     public void ShootGun()
@@ -158,5 +166,15 @@ public class PlayerController : MonoBehaviour
     {
         targetSpeed = moveSpeed;
         animator.CrossFade(walkAnimation, animationPlayTransition);
+    }
+
+    public void Die()
+    {
+        if (currentPlayerHealth<=0)
+        {
+            playerIsDead = true;
+            Debug.Log("Dead");
+        }
+        
     }
 }
