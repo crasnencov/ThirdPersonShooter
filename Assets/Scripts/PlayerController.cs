@@ -8,15 +8,16 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     public float targetSpeed;
-    public int maxPlayerHealth = 100;
-    public int currentPlayerHealth;
+    public float maxPlayerHealth = 100;
+    public float currentPlayerHealth;
+
     [SerializeField] private float moveSpeed = 2.0f;
     [SerializeField] private float runSpeed = 5.0f;
     [SerializeField] private float jumpHeight = 1.0f;
     [SerializeField] private float gravityValue = -9.81f;
     [SerializeField] private float rotationSpeed = 5f;
-    
-    
+
+
     [SerializeField] private float animationSmoothTime = 0.1f;
     [SerializeField] private float animationPlayTransition = 0.15f;
     [SerializeField] private Transform aimTarget;
@@ -28,7 +29,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 playerVelocity;
     private bool groundedPlayer;
 
-    private InputAction moveAction, jumpAction,  runAction;
+    private InputAction moveAction, jumpAction, runAction;
     public static InputAction ShootAction, ReloadAction;
     private InputAction pistolWeaponAction, shotgunWeaponAction, machineGunWeaponAction;
 
@@ -44,13 +45,14 @@ public class PlayerController : MonoBehaviour
     private int pistolRecoilAnimation, shotgunRecoilAnimation, machinegunRecoilAnimation;
 
     private bool playerIsDead = false;
-  
+    private PlayerHealthBar healthBar;
+
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
         playerInput = GetComponent<PlayerInput>();
         gunSelector = GetComponent<GunSelector>();
-        
+
         moveAction = playerInput.actions["Move"];
         jumpAction = playerInput.actions["Jump"];
         ShootAction = playerInput.actions["Shoot"];
@@ -74,9 +76,6 @@ public class PlayerController : MonoBehaviour
 
         runAnimation = Animator.StringToHash("Run");
         walkAnimation = Animator.StringToHash("Walk");
-        
-
-        
     }
 
     private void Start()
@@ -85,6 +84,7 @@ public class PlayerController : MonoBehaviour
         runAction.canceled += _ => { Walk(); };
         gunSelector.SwitchGun("Pistol");
         currentPlayerHealth = maxPlayerHealth;
+        healthBar = GetComponentInChildren<PlayerHealthBar>();
     }
 
     private void OnEnable()
@@ -143,10 +143,7 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat(moveZAnimationParameterId, currentAnimationBlendVector.y);
 
         aimTarget.position = cameraTransform.position + cameraTransform.forward * aimDistance;
-        if (!playerIsDead && currentPlayerHealth <= 0)
-        {
-            Die();
-        }
+        
     }
 
     public void ShootGun()
@@ -168,13 +165,22 @@ public class PlayerController : MonoBehaviour
         animator.CrossFade(walkAnimation, animationPlayTransition);
     }
 
-    public void Die()
+    private void Die()
     {
-        if (currentPlayerHealth<=0)
+        if (currentPlayerHealth <= 0)
         {
             playerIsDead = true;
             Debug.Log("Dead");
         }
-        
+    }
+
+    public void PlayerTakeDamage(float damage)
+    {
+        currentPlayerHealth -= damage;
+        healthBar.SetHealthBarPercentage(currentPlayerHealth / maxPlayerHealth);
+        if (!playerIsDead && currentPlayerHealth <= 0)
+        {
+            Die();
+        }
     }
 }

@@ -44,6 +44,7 @@ public class EnemyController : MonoBehaviour, IDamageable
     public float attackSpeed = 1.5f;
     private bool canAttack = false;
     private float timeOfLastAttack;
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -55,7 +56,7 @@ public class EnemyController : MonoBehaviour, IDamageable
     void Start()
     {
         InitializePatrolRoute();
-        Debug.Log(locationIndex);
+        
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         ragdoll = GetComponent<Ragdoll>();
@@ -81,20 +82,18 @@ public class EnemyController : MonoBehaviour, IDamageable
     void Update()
     {
         //agent.destination = playerTransform.position;
-        
-            if (!isChasingPlayer)
-            {
-                animator.SetFloat("Speed", agent.velocity.magnitude);
-                agent.speed = 2;
-            }
-            else
-            {
-                animator.SetFloat("Speed", 5);
-                agent.speed = 5;
-            }
-        
-        
-        
+
+        if (!isChasingPlayer)
+        {
+            animator.SetFloat("Speed", agent.velocity.magnitude);
+            agent.speed = 2;
+        }
+        else
+        {
+            animator.SetFloat("Speed", 5);
+            agent.speed = 5;
+        }
+
 
         if (!isDead && agent.remainingDistance < agent.stoppingDistance && !agent.pathPending)
         {
@@ -102,7 +101,7 @@ public class EnemyController : MonoBehaviour, IDamageable
         }
 
         var distance = Vector3.Distance(transform.position, playerTransform.position);
-        
+
         if (!isDead && distance < maxDistanceToPlayer)
         {
             MoveToPLayer();
@@ -168,9 +167,8 @@ public class EnemyController : MonoBehaviour, IDamageable
             if (Time.time >= timeOfLastAttack + attackSpeed)
             {
                 timeOfLastAttack = Time.time;
-                Attack(damage);
+                Attack();
             }
-            
         }
         else
         {
@@ -179,10 +177,9 @@ public class EnemyController : MonoBehaviour, IDamageable
         }
     }
 
-    private void Attack(int damage)
+    private void Attack()
     {
-        
         animator.CrossFade(attack, animationPlayTransition);
-        playerController.currentPlayerHealth -= damage;
+        playerController.PlayerTakeDamage(damage);
     }
 }
