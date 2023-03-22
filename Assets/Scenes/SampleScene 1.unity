@@ -890,7 +890,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &464284806
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2033,7 +2033,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BG: {fileID: 2031475735}
   cinemachineCam: {fileID: 1307977281}
-  weapons: {fileID: 443095056}
 --- !u!4 &957750595
 Transform:
   m_ObjectHideFlags: 0
@@ -3315,7 +3314,6 @@ MonoBehaviour:
   aimDistance: 10
   actionReference: {fileID: -7284073837234169256, guid: 2c1b9fd6767a5204e93b9e7bcae25fab, type: 3}
   animator: {fileID: 0}
-  playerIsDead: 0
 --- !u!143 &1505534596
 CharacterController:
   m_ObjectHideFlags: 0
@@ -4409,7 +4407,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2031475736
 RectTransform:
   m_ObjectHideFlags: 0

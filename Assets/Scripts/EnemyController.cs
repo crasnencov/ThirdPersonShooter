@@ -181,5 +181,10 @@ public class EnemyController : MonoBehaviour, IDamageable
     {
         animator.CrossFade(attack, animationPlayTransition);
         playerController.PlayerTakeDamage(damage);
+        if (playerController.playerIsDead)
+        {
+            Debug.Log("player dead" );
+            MoveToNextLocation();
+        }
     }
 }

@@ -44,8 +44,9 @@ public class PlayerController : MonoBehaviour
     private int jumpAnimation, runAnimation, walkAnimation;
     private int pistolRecoilAnimation, shotgunRecoilAnimation, machinegunRecoilAnimation;
 
-    private bool playerIsDead = false;
+    public bool playerIsDead = false;
     private PlayerHealthBar healthBar;
+    private GameManager gameManager;
 
     Ragdoll ragdoll;
     private void Awake()
@@ -185,6 +186,9 @@ public class PlayerController : MonoBehaviour
             playerIsDead = true;
             ragdoll.ActivateRagdoll();
             Debug.Log("Dead");
+            GameManager.Instance.GameOver();
+            Cursor.lockState = CursorLockMode.None;
+            gameObject.GetComponent<PlayerController>().enabled = false;
         }
     }
 }
