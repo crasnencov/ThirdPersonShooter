@@ -44,7 +44,7 @@ public class EnemyController : MonoBehaviour, IDamageable
     public float attackSpeed = 1.5f;
     private bool canAttack = false;
     private float timeOfLastAttack;
-
+    private bool countAsKilled = false;
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -132,7 +132,13 @@ public class EnemyController : MonoBehaviour, IDamageable
         ragdoll.ApplyForce(direction * dieForce);
         gameObject.GetComponent<NavMeshAgent>().enabled = false;
         isDead = true;
-        GameManager.Instance.EnemyKilled();
+        
+        if (!countAsKilled)
+        {
+            GameManager.Instance.EnemyKilled();
+            countAsKilled = true;
+        }
+        
     }
 
     private void InitializePatrolRoute()

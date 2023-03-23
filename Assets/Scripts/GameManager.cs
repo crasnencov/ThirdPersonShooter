@@ -15,16 +15,17 @@ public class GameManager : MonoBehaviour
     public Text endGameTxt;
     public GameObject enemies;
     private int winCount, loseCount;
-    private Transform[] allEnemies;
     private int enemiesCount;
+    
 
     private void Awake()
     {
         Time.timeScale = 1f;
         Instance = this;
 
-        allEnemies = enemies.GetComponentsInChildren<Transform>();
-        enemiesCount = allEnemies.Length;
+        enemiesCount = enemies.transform.childCount;
+        
+        Debug.Log("enemies count " + enemiesCount);
     }
 
     private void Start()
@@ -73,7 +74,8 @@ public class GameManager : MonoBehaviour
     public void EnemyKilled()
     {
         enemiesCount--;
-        if (enemiesCount <= allEnemies.Length)
+        Debug.Log("enemies kill" + enemiesCount);
+        if (enemiesCount == 0)
         {
             Win();
         }
