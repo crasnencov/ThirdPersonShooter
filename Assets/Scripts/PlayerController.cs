@@ -89,6 +89,7 @@ public class PlayerController : MonoBehaviour
         gunSelector.SwitchGun("Pistol");
         currentPlayerHealth = maxPlayerHealth;
         healthBar = GetComponentInChildren<PlayerHealthBar>();
+        targetSpeed = moveSpeed;
     }
 
     private void OnEnable()
