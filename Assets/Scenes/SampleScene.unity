@@ -1550,7 +1550,7 @@ GameObject:
   - component: {fileID: 796500609}
   - component: {fileID: 796500608}
   m_Layer: 5
-  m_Name: DiedTxt
+  m_Name: LoseTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1609,7 +1609,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Died 0 Times
+  m_Text: Lose 0 Times
 --- !u!222 &796500609
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2034,6 +2034,10 @@ MonoBehaviour:
   BG: {fileID: 2031475735}
   cinemachineCam: {fileID: 1307977281}
   weapons: {fileID: 443095056}
+  wonTxt: {fileID: 288044649}
+  loseTxt: {fileID: 796500608}
+  endGameTxt: {fileID: 165359512}
+  enemies: {fileID: 1769805515}
 --- !u!4 &957750595
 Transform:
   m_ObjectHideFlags: 0
@@ -3282,6 +3286,7 @@ GameObject:
   - component: {fileID: 1505534603}
   - component: {fileID: 1505534605}
   - component: {fileID: 1505534606}
+  - component: {fileID: 1505534607}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -3584,6 +3589,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fe1abe774509734586da18e9b00eda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1505534607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1505534594}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b807c44ca9f2c554a91201f15d284b4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectID: 
 --- !u!1 &1527244928 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5145279833893377269, guid: 09aade0ecefd01e4b8f7661acf64f5c2, type: 3}

@@ -132,6 +132,7 @@ public class EnemyController : MonoBehaviour, IDamageable
         ragdoll.ApplyForce(direction * dieForce);
         gameObject.GetComponent<NavMeshAgent>().enabled = false;
         isDead = true;
+        GameManager.Instance.EnemyKilled();
     }
 
     private void InitializePatrolRoute()

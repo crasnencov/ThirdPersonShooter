@@ -79,6 +79,7 @@ public class PlayerController : MonoBehaviour
         runAnimation = Animator.StringToHash("Run");
         walkAnimation = Animator.StringToHash("Walk");
         ragdoll = GetComponent<Ragdoll>();
+        
     }
 
     private void Start()
@@ -146,7 +147,10 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat(moveZAnimationParameterId, currentAnimationBlendVector.y);
 
         aimTarget.position = cameraTransform.position + cameraTransform.forward * aimDistance;
-        
+        if(animator == null)
+        {
+            animator = GetComponent<Animator>();
+        }
     }
 
     public void ShootGun()
@@ -187,8 +191,8 @@ public class PlayerController : MonoBehaviour
             ragdoll.ActivateRagdoll();
             Debug.Log("Dead");
             GameManager.Instance.GameOver();
-            Cursor.lockState = CursorLockMode.None;
-            gameObject.GetComponent<PlayerController>().enabled = false;
+            // Cursor.lockState = CursorLockMode.None;
+            
         }
     }
 }
